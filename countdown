@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>countdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #fff;
+    background-image: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(24,201,93,0.12) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .clock { display: flex; align-items: center; }
+  .digit {
+    width: 80px; height: 120px;
+    border: 1px solid #e8e8e8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 88px;
+    color: #111;
+    position: relative;
+  }
+  .digit::after {
+    content: ''; position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 1px; background: #f0f0f0;
+  }
+  .digits { display: flex; gap: 4px; }
+  .unit { display: flex; flex-direction: column; align-items: center; }
+  .unit-label {
+    font-size: 10px; letter-spacing: .2em;
+    color: #ccc; text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .sep { font-size: 80px; color: #ddd; padding: 0 6px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<div class="clock">
+  <div class="unit">
+    <div class="digits"><div class="digit" id="d0">0</div><div class="digit" id="d1">0</div></div>
+    <div class="unit-label">days</div>
+  </div>
+  <div class="sep">:</div>
+  <div class="unit">
+    <div class="digits"><div class="digit" id="h0">0</div><div class="digit" id="h1">0</div></div>
+    <div class="unit-label">hours</div>
+  </div>
+  <div class="sep">:</div>
+  <div class="unit">
+    <div class="digits"><div class="digit" id="m0">0</div><div class="digit" id="m1">0</div></div>
+    <div class="unit-label">mins</div>
+  </div>
+  <div class="sep">:</div>
+  <div class="unit">
+    <div class="digits"><div class="digit" id="s0">0</div><div class="digit" id="s1">0</div></div>
+    <div class="unit-label">secs</div>
+  </div>
+</div>
+<script>
+  const target = new Date('2026-05-30T09:30:00-04:00').getTime();
+  function set2(p, v) {
+    const s = String(v).padStart(2,'0');
+    document.getElementById(p+'0').textContent = s[0];
+    document.getElementById(p+'1').textContent = s[1];
+  }
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) { document.body.innerHTML = '<div style="color:#111;font-family:Share Tech Mono,monospace;font-size:88px;">00:00:00:00</div>'; return; }
+    set2('d', Math.floor(diff/86400000));
+    set2('h', Math.floor(diff%86400000/3600000));
+    set2('m', Math.floor(diff%3600000/60000));
+    set2('s', Math.floor(diff%60000/1000));
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
